@@ -58,37 +58,6 @@ unsigned char	pars_flag(int argc, char **argv, unsigned char *flag)
 }
 
 
-
-t_list		*ft_make_list(DIR *dirp, unsigned char flag, t_list *list)
-{
-    struct dirent	*dirread;
-
-	while ((dirread = readdir(dirp)))
-	{
-		if (!list)
-		{
-			if ((!(flag & 16) || (flag & 16 && (dirread->d_name)[0] != '.')) &&
-			!(list = ft_lst_ls_new(dirread)))
-			{
-				ft_lstdel(&list);
-				return (NULL);
-			}
-        		//return (ft_lstdel(&list));
-		}
-		else if (!ft_lstadd(&list, flag, dirread))
-		{
-			ft_lstdel(&list);
-			return (NULL);
-		}
-			//return (ft_lstdel(&list));
-	}
-	return (list);
-}
-
-
-
-
-
 int     main(int argc, char **argv)
 {
 	unsigned char	flag;
@@ -111,11 +80,11 @@ int     main(int argc, char **argv)
     if (!(dirp = opendir(".")) && write(1, "NO DIR!!", 8))
         return (0);
 
-	list = ft_make_list(dirp, flag, list);
+	list = ft_make_list(dirp, flag);
 
     while (list)
     {
-		printf("NAME = %16s | TYPE = %2d\n", list->name, list->type_file);
+		printf("NAME = %16s | TYPE = %2d | TIME = %s", list->name, list->type_file, ctime(&(list->time_mod)));
         list = list->next;
     }
 
