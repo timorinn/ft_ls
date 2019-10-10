@@ -88,7 +88,7 @@ int     main(int argc, char **argv)
         list = list->next;
     }
 
-	ft_lstdel(&list); // УТЕЧКА МОЖЕТ БЫТЬ СЛЕДСТВИЕМ ВЫВОДА ПАРАМЕТРОВ НА ЭКРАН
+	ft_lstdel_ls(&list); // УТЕЧКА МОЖЕТ БЫТЬ СЛЕДСТВИЕМ ВЫВОДА ПАРАМЕТРОВ НА ЭКРАН
     closedir(dirp);
     return (1);
 }

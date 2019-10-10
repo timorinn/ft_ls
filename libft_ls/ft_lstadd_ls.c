@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd.c                                        :+:      :+:    :+:   */
+/*   ft_lstadd_ls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bford <bford@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/07 19:21:24 by bford             #+#    #+#             */
-/*   Updated: 2019/10/10 20:51:23 by bford            ###   ########.fr       */
+/*   Created: 2019/10/10 21:00:29 by bford             #+#    #+#             */
+/*   Updated: 2019/10/10 21:01:19 by bford            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 #include <sys/stat.h>
 #include "ft_ls.h"
 
-int		ft_lstadd(t_list **l, unsigned char flag, struct dirent *dirread)
+int		ft_lstadd_ls(t_list **l, unsigned char flag, struct dirent *dirread)
 {
 	t_list		*copy;
 	t_list		*prev;
