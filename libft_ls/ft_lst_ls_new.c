@@ -6,7 +6,7 @@
 /*   By: bford <bford@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/07 18:38:43 by bford             #+#    #+#             */
-/*   Updated: 2019/10/10 18:13:02 by bford            ###   ########.fr       */
+/*   Updated: 2019/10/10 22:21:25 by bford            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,12 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
-t_list	*ft_lst_ls_new(struct dirent *dirread)
+t_ls	*ft_lst_ls_new(struct dirent *dirread)
 {
-	t_list			*list;
+	t_ls			*list;
 	struct stat     buff;
 
-	if (!(list = (t_list *)malloc(sizeof(t_list))))
+	if (!(list = (t_ls *)malloc(sizeof(t_ls))))
 		return (NULL);
 	if (!(list->name = ft_strdup(dirread->d_name)))
 		return (NULL);

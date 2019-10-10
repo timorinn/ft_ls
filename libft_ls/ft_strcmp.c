@@ -1,27 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdel_ls.c                                     :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: bford <bford@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/10 21:00:22 by bford             #+#    #+#             */
-/*   Updated: 2019/10/10 22:18:56 by bford            ###   ########.fr       */
+/*   Created: 2019/09/03 20:37:59 by bford             #+#    #+#             */
+/*   Updated: 2019/09/07 15:46:09 by bford            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_ls.h"
-#include <stdlib.h>
-
-int		ft_lstdel_ls(t_ls **l)
+int		ft_strcmp(const char *s1, const char *s2)
 {
-	if (l && *l)
+	while (*s1 == *s2 && *s1)
 	{
-		if ((*l)->next)
-			ft_lstdel_ls(&((*l)->next));
-		ft_strdel_ls(&((*l)->name));
-		free(*l);
-		*l = NULL;
+		s1++;
+		s2++;
 	}
-	return (0);
+	return (unsigned char)(*s1) - (unsigned char)(*s2);
 }

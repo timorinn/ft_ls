@@ -70,7 +70,7 @@ int     main(int argc, char **argv)
     struct group    *group_name;
     struct tm       *mytime;
 	*/
-    t_list          *list;
+    t_ls         	*list;
 
 	list = NULL;
 
@@ -82,12 +82,13 @@ int     main(int argc, char **argv)
 
 	list = ft_make_list(dirp, flag);
 
+	
     while (list)
     {
 		printf("NAME = %16s | TYPE = %2d | TIME = %s", list->name, list->type_file, ctime(&(list->time_mod)));
         list = list->next;
     }
-
+	
 	ft_lstdel_ls(&list); // УТЕЧКА МОЖЕТ БЫТЬ СЛЕДСТВИЕМ ВЫВОДА ПАРАМЕТРОВ НА ЭКРАН
     closedir(dirp);
     return (1);

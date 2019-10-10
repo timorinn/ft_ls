@@ -6,7 +6,7 @@
 /*   By: bford <bford@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/10 21:00:29 by bford             #+#    #+#             */
-/*   Updated: 2019/10/10 21:01:19 by bford            ###   ########.fr       */
+/*   Updated: 2019/10/10 22:30:01 by bford            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,10 @@
 #include <sys/stat.h>
 #include "ft_ls.h"
 
-int		ft_lstadd_ls(t_list **l, unsigned char flag, struct dirent *dirread)
+int		ft_lstadd_ls(t_ls **l, unsigned char flag, struct dirent *dirread)
 {
-	t_list		*copy;
-	t_list		*prev;
+	t_ls		*copy;
+	t_ls		*prev;
 	long int	time_our;
 	struct stat	buff;
 
@@ -39,9 +39,8 @@ int		ft_lstadd_ls(t_list **l, unsigned char flag, struct dirent *dirread)
 		}
 		else
 		{
-			while (copy->next && copy->time_mod >= time_our)
+			while (copy && copy->time_mod >= time_our)
 			{
-				printf("%p\n", copy->next);
 				prev = copy;
 				copy = copy->next;
 			}
@@ -52,12 +51,23 @@ int		ft_lstadd_ls(t_list **l, unsigned char flag, struct dirent *dirread)
 	}
 	else
 	{
-		while (copy->next)
-			copy = copy->next;
-		if (!(copy->next = ft_lst_ls_new(dirread)))
-			return (0);
+		if (ft_strcmp(dirread->d_name, prev->name) < 0)
+		{
+			if (!(*l = ft_lst_ls_new(dirread)))
+				return (0);
+			(*l)->next = prev;
+		}
+		else
+		{
+			while (copy && ft_strcmp(dirread->d_name, copy->name) >= 0)
+			{
+				prev = copy;
+				copy = copy->next;
+			}
+			if (!(prev->next = ft_lst_ls_new(dirread)))
+				return (0);
+			prev->next->next = copy;
+		}
 	}
-	//if (!(copy->next = ft_lst_ls_new(dirread)))
-	//	return (0);
 	return (1);
 }
