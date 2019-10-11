@@ -23,7 +23,7 @@ int		ft_strchr_ind(const char *s, char c)
 	return(-1);
 }
 
-unsigned char	pars_flag(int argc, char **argv, unsigned char *flag)
+unsigned char	pars_flag(int *argc, char ***argv, unsigned char *flag)
 {
 	int	i;
 	int	i2;
@@ -31,28 +31,29 @@ unsigned char	pars_flag(int argc, char **argv, unsigned char *flag)
 	i = 1;
 	i2 = 1;
 	*flag = 0;
-	while (i < argc)
+	(*argv)++;
+	while (*argc > 1 && ***argv == '-')
 	{
-		if (argv[i][0] == '-')
+		i2 = 1;
+		(**argv)++;
+		while ((***argv) == 'a' || (***argv) == 'r' || (***argv) == 't' ||
+		(***argv) == 'l' || (***argv) == 'R')
 		{
-			i2 = 1;
-			while (argv[i][i2] == 'a' || argv[i][i2] == 'r' || argv[i][i2] == 't' ||
-			argv[i][i2] == 'l' || argv[i][i2] == 'R')
-			{
-				if (argv[i][i2] == 'a')
-					*flag |= 16;
-				else if (argv[i][i2] == 'r')
-					*flag |= 8;
-				else if (argv[i][i2] == 't')
-					*flag |= 4;
-				else if (argv[i][i2] == 'l')
-					*flag |= 2;
-				else
-					*flag |= 1;
-				i2++;
-			}
+			if (***argv == 'a')
+				*flag |= 16;
+			else if (***argv == 'r')
+				*flag |= 8;
+			else if (***argv == 't')
+				*flag |= 4;
+			else if (***argv == 'l')
+				*flag |= 2;
+			else
+				*flag |= 1;
+			i2++;
+			(**argv)++;
 		}
-		i++;
+		(*argv)++;
+		(*argc)--;
 	}
 	return (*flag);
 }
@@ -64,8 +65,9 @@ int     main(int argc, char **argv)
 
     DIR *dirp;
     //struct dirent	*dirread;
-	/*
+	
     struct stat     buff;
+	/*
     struct passwd   *user_name;
     struct group    *group_name;
     struct tm       *mytime;
@@ -74,25 +76,40 @@ int     main(int argc, char **argv)
 
 	list = NULL;
 
-	flag = pars_flag(argc, argv, &flag);
-	printf("FLAGS = %hhu\n", flag);
-
-    if (!(dirp = opendir(".")) && write(1, "NO DIR!!", 8))
-        return (0);
-
-	list = ft_make_list(dirp, flag);
-
-	
-    while (list)
-    {
-		printf("NAME = %16s | TYPE = %2d | TIME = %s", list->name, list->type_file, ctime(&(list->time_mod)));
-        list = list->next;
-    }
-	
-	ft_lstdel_ls(&list); // УТЕЧКА МОЖЕТ БЫТЬ СЛЕДСТВИЕМ ВЫВОДА ПАРАМЕТРОВ НА ЭКРАН
-    closedir(dirp);
+	flag = pars_flag(&argc, &argv, &flag);
+	printf("FLAGS === %d\n", flag);
+	while (argc-- > 1)
+	{
+		if ((dirp = opendir(*argv)))
+		{
+			list = ft_make_list(dirp, flag);
+			while (list)
+			{
+				printf("NAME = %16s | TYPE = %2d | TIME = %s", list->name, list->type_file, ctime(&(list->time_mod)));
+    			list = list->next;
+    		}
+			ft_lstdel_ls(&list);
+			closedir(dirp);
+		}
+		else if (!stat(*argv, &buff))
+			printf("%s - THIS IS FILE CTOTTPOII,eHTHO!!\n", *argv);
+		else
+			printf("I DONT KNOW WHAT IS THAT! ??? %s\n", *argv);
+		argv++;
+		ft_lstdel_ls(&list);
+	}
     return (1);
 }
+
+
+		/*
+		list = ft_make_list(dirp, flag);
+		while (list)
+		{
+			printf("NAME = %16s | TYPE = %2d | TIME = %s", list->name, list->type_file, ctime(&(list->time_mod)));
+    		list = list->next;
+    	}
+		*/
 
 		/*
 		struct stat     buff;
